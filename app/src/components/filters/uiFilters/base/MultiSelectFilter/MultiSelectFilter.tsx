@@ -6,6 +6,7 @@ type MultiSelectProps = {
   label: string;
   options: Option[];
   selected?: Option[];
+  onApply: (selected: Option[]) => void;
   onSelectedChange: (selected: Option[]) => void;
   onFilterClear: () => void;
 };
@@ -14,6 +15,7 @@ export const MultiSelectFilter = ({
   label,
   options,
   selected = [],
+  onApply,
   onSelectedChange,
   onFilterClear,
 }: MultiSelectProps) => {
@@ -47,8 +49,8 @@ export const MultiSelectFilter = ({
     if (tempSelectedItems.length === 0) {
       onFilterClear();
     } else {
-      // Replace with onApply
       onSelectedChange(tempSelectedItems);
+      onApply(tempSelectedItems);
     }
     setSelectedItems(tempSelectedItems);
     setAnchorEl(null);

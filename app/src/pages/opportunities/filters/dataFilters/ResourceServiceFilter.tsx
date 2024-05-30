@@ -37,6 +37,7 @@ export const ResourceServiceFilter = ({
       selected={selected}
       onSelectedChange={handleFilterChange}
       onFilterClear={onFilterClear}
+      onApply={() => {}}
     />
   );
 };

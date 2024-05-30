@@ -1,13 +1,9 @@
 import { ReactNode } from "react";
 
 export type Option = {
-    value: string;
-    label: string;
-    display?: ReactNode;
-}
+  value: string;
+  label: string;
+  display?: ReactNode;
+};
 
-export const filterTypes = {
-    singleSelect: "singleSelect",
-    multiSelect: "multiSelect",
-    range: "range"
-}
+export type FilterInputTypes = Option | Option[] | Range;

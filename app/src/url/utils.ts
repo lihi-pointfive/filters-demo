@@ -1,12 +1,36 @@
-export const handleURL = (filterName: string, selectedValue: any) => {
-  const searchParams = new URLSearchParams(window.location.search);
+import { FilterInputTypes, Option } from "../components/filters/types.ts";
+import { Range } from "../components/filters/uiFilters/base/RangeFilter/RangeFilter.tsx";
 
-  // Set the selected value for the filter in the URL search parameters
-  searchParams.set(filterName, selectedValue.value);
+const isOption = (value: any): value is Option => {
+  return (
+    (value as Option).label !== undefined &&
+    (value as Option).value !== undefined
+  );
+};
 
-  // Construct the new URL with the updated search parameters
-  const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+const isRange = (value: any): value is Range => {
+  return (
+    (value as Range).min !== undefined && (value as Range).max !== undefined
+  );
+};
 
-  // Update the browser URL
-  window.history.pushState({}, "", newUrl);
+export const updateURLWithFilter = (value: FilterInputTypes, label: string) => {
+  const params = new URLSearchParams(window.location.search);
+
+  if (isOption(value)) {
+    params.set(label, value.label);
+  } else if (Array.isArray(value)) {
+    const values = value.map((option) => option.label).join(",");
+    params.set(label, values);
+  } else if (isRange(value)) {
+    params.set(label, `${value.min}-${value.max}`);
+  }
+
+  window.history.pushState({}, "", `${window.location.pathname}?${params}`);
+};
+
+export const clearURLFromFilter = (label: string) => {
+  const params = new URLSearchParams(window.location.search);
+  params.delete(label);
+  window.history.pushState({}, "", `${window.location.pathname}?${params}`);
 };

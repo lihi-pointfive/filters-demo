@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
+import { FilterInputTypes } from "../types.ts";
+import { clearURLFromFilter, updateURLWithFilter } from "../../../url/utils.ts";
 
 interface FilterConfig {
   component: React.ComponentType<any>;
@@ -19,6 +21,10 @@ export const FiltersPanel = ({
     {},
   );
 
+  const handleOnApply = (selected: FilterInputTypes, label: string) => {
+    updateURLWithFilter(selected, label);
+  };
+
   const handleFilterChange = (updatedWhereClause: any, label: string) => {
     setActiveFilters((prevFilters) => ({
       ...prevFilters,
@@ -31,6 +37,7 @@ export const FiltersPanel = ({
       const { [label]: _, ...newFilters } = prevFilters;
       return newFilters;
     });
+    clearURLFromFilter(label);
   };
 
   useEffect(() => {
@@ -47,6 +54,9 @@ export const FiltersPanel = ({
         <Grid item key={index}>
           <filter.component
             {...filter.props}
+            onApply={(selected: FilterInputTypes) => {
+              handleOnApply(selected, filter.props.label);
+            }}
             onSelectedChange={(updatedWhereClause: any) =>
               handleFilterChange(updatedWhereClause, filter.props.label)
             }
