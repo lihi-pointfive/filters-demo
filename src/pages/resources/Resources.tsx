@@ -13,10 +13,7 @@ const Resources = () => {
 
   return (
     <div className="text-center flex flex-col gap-6">
-      <div>
-        <Typography variant="h4">ResourcePage</Typography>
-        <Typography>with URL updates</Typography>
-      </div>
+      <Typography variant="h4">ResourcePage</Typography>
       <ResourcesFiltersPanel
         filtersData={data}
         onFilterChange={setWhereClause}
