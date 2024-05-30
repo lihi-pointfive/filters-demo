@@ -1,24 +1,43 @@
-// import qs, { ParsedQs } from "qs";
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import { URLParamKeysType } from "./constants.ts";
+import { useState, useEffect } from 'react';
 
-export const useURLParams = (keys: URLParamKeysType[]) => {
-  const [params, setParams] = useState<Record<string, string>>(
-    keys.reduce((acc, key) => ({ ...acc, [key]: "" }), {}),
-  );
-  const [searchParams] = useSearchParams();
+type QueryParams = Record<string, string>;
+
+export const useURLSearchParams = () => {
+  const [queryParams, setQueryParams] = useState<QueryParams>({});
 
   useEffect(() => {
-    const updatedParams: Partial<Record<URLParamKeysType, string>> = {};
-    for (const key of keys) {
-      const serializedParam = searchParams.get(key);
-      if (serializedParam) {
-        updatedParams[key] = "";
+    const parseSearchParams = (): QueryParams => {
+      const searchParams = new URLSearchParams(window.location.search);
+      const params: QueryParams = {};
+      for (const [key, value] of searchParams.entries()) {
+        params[key] = value;
+      }
+      return params;
+    };
+
+    const handlePopState = () => {
+      setQueryParams(parseSearchParams());
+    };
+    window.addEventListener('popstate', handlePopState);
+
+    setQueryParams(parseSearchParams());
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
+
+  const updateSearchParams = (params: QueryParams) => {
+    const searchParams = new URLSearchParams();
+    for (const key in params) {
+      if (params.hasOwnProperty(key)) {
+        searchParams.set(key, params[key]);
       }
     }
-    setParams(updatedParams);
-  }, [searchParams]);
+    const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+    window.history.pushState({}, '', newUrl);
+    setQueryParams(params);
+  };
 
-  return params;
+  return [queryParams, updateSearchParams] as const;
 };

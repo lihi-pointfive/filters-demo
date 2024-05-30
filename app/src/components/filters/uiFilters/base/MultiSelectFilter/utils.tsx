@@ -9,3 +9,10 @@ export function defaultDataToMultiSelectInput(
     label: item,
   }));
 }
+
+export function defaultURLToMultiSelectInput(state?: string): Option[] {
+  return (state?.split(",").map((item) => ({
+    label: item,
+    value: item,
+  }))) || [];
+}

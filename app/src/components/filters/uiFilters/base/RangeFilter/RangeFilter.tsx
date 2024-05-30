@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Menu, Slider } from "@mui/material";
 
 export type Range = {
@@ -10,27 +10,25 @@ type RangeProps = {
   label: string;
   range: Range;
   selected?: Range;
-  onApply: (selected: Range) => void;
+  onApply: (selected?: Range) => void;
   onSelectedChange?: any;
-  onFilterClear: () => void;
 };
 
 export const RangeFilter = ({
   label,
   range,
+  selected = range,
   onApply,
   onSelectedChange,
-  onFilterClear,
 }: RangeProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [value, setValue] = useState<Range>({ min: range.min, max: range.max });
   const [tempValue, setTempValue] = useState<Range>({
     min: range.min,
     max: range.max,
   });
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setTempValue(value);
+    setTempValue(selected);
     setAnchorEl(event.currentTarget);
   };
 
@@ -40,16 +38,19 @@ export const RangeFilter = ({
   };
 
   const handleApply = () => {
-    setTempValue(tempValue);
-    if (!tempValue) {
-      onFilterClear();
-    } else {
-      onApply(tempValue);
-      onSelectedChange(tempValue);
-    }
-    setValue(tempValue);
+    onApply(
+      tempValue.min !== range.min || tempValue.max !== range.max
+        ? tempValue
+        : undefined,
+    );
     setAnchorEl(null);
   };
+
+  useEffect(() => {
+    if (selected.min !== range.min || selected.max !== range.max) {
+      onSelectedChange(selected)
+    }
+  }, [selected]);
 
   const handleChange = (_: Event, newValue: number | number[]) => {
     const val = newValue as number[];
@@ -58,10 +59,19 @@ export const RangeFilter = ({
 
   return (
     <>
-      <Button onClick={handleClick} variant="outlined">
-        {value.min === range.min && value.max === range.max
+      <Button
+        onClick={handleClick}
+        variant="outlined"
+        style={{
+          backgroundColor:
+            selected.min !== range.min || selected.max !== range.max
+              ? "lightskyblue"
+              : "white",
+        }}
+      >
+        {selected.min === range.min && selected.max === range.max
           ? label
-          : `${label}: ${value.min} - ${value.max}`}
+          : `${label}: ${selected.min} - ${selected.max}`}
       </Button>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
         <div>

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import { FilterInputTypes } from "../types.ts";
-import { clearURLFromFilter, updateURLWithFilter } from "../../../url/utils.ts";
+import { filterToURL } from "../../../url/utils.ts";
+import { useURLSearchParams } from "../../../url/hooks.ts";
 
 interface FilterConfig {
   component: React.ComponentType<any>;
@@ -20,24 +21,35 @@ export const FiltersPanel = ({
   const [activeFilters, setActiveFilters] = useState<{ [key: string]: any }>(
     {},
   );
+  const [queryParams, updateSearchParams] = useURLSearchParams();
 
-  const handleOnApply = (selected: FilterInputTypes, label: string) => {
-    updateURLWithFilter(selected, label);
+  const handleOnApply = (label: string, selected: FilterInputTypes) => {
+    const filterSelected = filterToURL(selected);
+    const updatedQueryParams = { ...queryParams };
+    const updatedActiveFilters = { ...activeFilters };
+
+    if (filterSelected) {
+      updatedQueryParams[label] = filterSelected;
+    } else {
+      delete updatedQueryParams[label];
+    }
+
+    updateSearchParams(updatedQueryParams);
+    setActiveFilters(updatedActiveFilters);
   };
 
-  const handleFilterChange = (updatedWhereClause: any, label: string) => {
-    setActiveFilters((prevFilters) => ({
-      ...prevFilters,
-      [label]: updatedWhereClause,
-    }));
-  };
-
-  const handleFilterClear = (label: string) => {
+  const handleFilterChange = (label: string, updatedWhereClause?: any) => {
     setActiveFilters((prevFilters) => {
-      const { [label]: _, ...newFilters } = prevFilters;
-      return newFilters;
+      const updatedFilters = { ...prevFilters };
+
+      if (updatedWhereClause) {
+        updatedFilters[label] = updatedWhereClause;
+      } else {
+        delete updatedFilters[label];
+      }
+
+      return updatedFilters;
     });
-    clearURLFromFilter(label);
   };
 
   useEffect(() => {
@@ -54,13 +66,13 @@ export const FiltersPanel = ({
         <Grid item key={index}>
           <filter.component
             {...filter.props}
+            state={queryParams[filter.props.label]}
             onApply={(selected: FilterInputTypes) => {
-              handleOnApply(selected, filter.props.label);
+              handleOnApply(filter.props.label, selected);
             }}
-            onSelectedChange={(updatedWhereClause: any) =>
-              handleFilterChange(updatedWhereClause, filter.props.label)
+            onSelectedChange={(updatedWhereClause?: any) =>
+              handleFilterChange(filter.props.label, updatedWhereClause)
             }
-            onFilterClear={() => handleFilterClear(filter.props.label)}
           />
         </Grid>
       ))}

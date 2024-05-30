@@ -8,16 +8,13 @@ import { MonthlySavingFilter } from "../dataFilters/MonthlySavingsFilter.tsx";
 
 type ResourcesFiltersPanelProps = {
   filtersData: ResourceFilters;
-  filtersState: any;
   onFilterChange: (whereClause: ResourceFilterInput) => void;
 };
 
 export const ResourcesFiltersPanel = ({
   filtersData,
-  filtersState,
   onFilterChange,
 }: ResourcesFiltersPanelProps) => {
-  console.log(filtersState);
   const filters = [
     {
       component: ServiceFilter,

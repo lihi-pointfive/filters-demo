@@ -3,8 +3,6 @@ import { Box, Container, Paper, Typography } from "@mui/material";
 import JsonView from "react-json-view";
 import { OpportunitiesFilterInput } from "../../graphql/graphql.ts";
 import { ResourcesFiltersPanel } from "./filters/ResourcesFiltersPanel/ResourcesFiltersPanel.tsx";
-import { useURLParams } from "../../url/hooks.ts";
-import { URLParamKeys } from "../../url/constants.ts";
 
 const Resources = () => {
   const data = {
@@ -12,14 +10,15 @@ const Resources = () => {
     monthlySaving: { max: 200 },
   };
   const [whereClause, setWhereClause] = useState<OpportunitiesFilterInput>();
-  const { filters } = useURLParams([URLParamKeys.filters]);
 
   return (
-    <div className="text-center flex flex-col gap-8">
-      <Typography variant="h4">Resources Page</Typography>
+    <div className="text-center flex flex-col gap-6">
+      <div>
+        <Typography variant="h4">ResourcePage</Typography>
+        <Typography>with URL updates</Typography>
+      </div>
       <ResourcesFiltersPanel
         filtersData={data}
-        filtersState={filters}
         onFilterChange={setWhereClause}
       />
       <Container>

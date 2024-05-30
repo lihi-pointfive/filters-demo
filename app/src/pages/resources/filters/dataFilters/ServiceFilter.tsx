@@ -1,18 +1,21 @@
+import { useEffect, useState } from "react";
 import {
   ResourceFilterInput,
   ResourceFilters,
 } from "../../../../graphql/graphql.ts";
 import { MultiSelectFilter } from "../../../../components/filters/uiFilters/base/MultiSelectFilter/MultiSelectFilter.tsx";
-import { defaultDataToMultiSelectInput } from "../../../../components/filters/uiFilters/base/MultiSelectFilter/utils.tsx";
+import {
+  defaultDataToMultiSelectInput,
+  defaultURLToMultiSelectInput,
+} from "../../../../components/filters/uiFilters/base/MultiSelectFilter/utils.tsx";
 import { Option } from "../../../../components/filters/types.ts";
 
 type ServiceFilterProps = {
   label: string;
   filterData: ResourceFilters["service"];
-  selected?: Option[];
+  state?: string;
   onApply: (selected: Option[]) => void;
   onSelectedChange: (where?: ServiceFilterInput) => void;
-  onFilterClear: () => void;
 };
 
 export type ServiceFilterInput = {
@@ -22,15 +25,16 @@ export type ServiceFilterInput = {
 export const ServiceFilter = ({
   label,
   filterData,
-  selected,
+  state,
   onApply,
   onSelectedChange,
-  onFilterClear,
 }: ServiceFilterProps) => {
-  // filter data to ui filter input (options)
+  const [selected, setSelected] = useState<Option[]>([]);
   const options = defaultDataToMultiSelectInput(filterData);
 
-  // url selected to ui filter input (selected)
+  useEffect(() => {
+    setSelected(defaultURLToMultiSelectInput(state));
+  }, [state]);
 
   const handleSelectedChange = (selected: Option[]) => {
     const where = {
@@ -38,7 +42,7 @@ export const ServiceFilter = ({
         IN: selected.map((item) => item.value),
       },
     };
-    onSelectedChange(where);
+    onSelectedChange(selected.length > 0 ? where : undefined);
   };
 
   return (
@@ -48,7 +52,6 @@ export const ServiceFilter = ({
       selected={selected}
       onApply={onApply}
       onSelectedChange={handleSelectedChange}
-      onFilterClear={onFilterClear}
     />
   );
 };

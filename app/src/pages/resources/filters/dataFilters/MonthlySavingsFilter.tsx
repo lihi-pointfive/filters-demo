@@ -2,44 +2,53 @@ import {
   ResourceFilterInput,
   ResourceFilters,
 } from "../../../../graphql/graphql.ts";
-import { defaultDataToRangeInput } from "../../../../components/filters/uiFilters/base/RangeFilter/utils.ts";
+import {
+  defaultDataToRangeInput,
+  defaultURLToRangeInput,
+} from "../../../../components/filters/uiFilters/base/RangeFilter/utils.ts";
 import { RangeFilter } from "../../../../components/filters/uiFilters/base/RangeFilter/RangeFilter.tsx";
 import { Range } from "../../../../components/filters/uiFilters/base/RangeFilter/RangeFilter.tsx";
+import { useEffect, useState } from "react";
 
 type SavingsFilterProps = {
   label: string;
   filterData: ResourceFilters["monthlySaving"];
-  onApply: (selected: Range) => void;
-  onSelectedChange: (where: ResourceFilterInput) => void;
-  onFilterClear: () => void;
+  state?: string;
+  onApply: (selected?: Range) => void;
+  onSelectedChange: (where?: ResourceFilterInput) => void;
 };
 
 export const MonthlySavingFilter = ({
   label,
   filterData,
+  state,
   onApply,
   onSelectedChange,
-  onFilterClear,
 }: SavingsFilterProps) => {
+  const [selected, setSelected] = useState<Range>();
   const range = defaultDataToRangeInput(filterData);
 
-  const handleSelectedChange = (selected: Range) => {
+  const handleSelectedChange = (selected?: Range) => {
     const where = {
       monthlySavings: {
-        GTE: selected.min,
-        LTE: selected.max,
+        GTE: selected?.min,
+        LTE: selected?.max,
       },
     };
-    onSelectedChange(where);
+    onSelectedChange(selected ? where : undefined);
   };
+
+  useEffect(() => {
+    setSelected(defaultURLToRangeInput(state));
+  }, [state]);
 
   return (
     <RangeFilter
       label={label}
       range={range}
+      selected={selected}
       onApply={onApply}
       onSelectedChange={handleSelectedChange}
-      onFilterClear={onFilterClear}
     />
   );
 };

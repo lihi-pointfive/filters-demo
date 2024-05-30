@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Checkbox, Menu, MenuItem, TextField } from "@mui/material";
 import { Option } from "../../../types.ts";
 
@@ -8,7 +8,6 @@ type MultiSelectProps = {
   selected?: Option[];
   onApply: (selected: Option[]) => void;
   onSelectedChange: (selected: Option[]) => void;
-  onFilterClear: () => void;
 };
 
 export const MultiSelectFilter = ({
@@ -17,15 +16,14 @@ export const MultiSelectFilter = ({
   selected = [],
   onApply,
   onSelectedChange,
-  onFilterClear,
 }: MultiSelectProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedItems, setSelectedItems] = useState<Option[]>(selected);
   const [searchText, setSearchText] = useState("");
-  const [tempSelectedItems, setTempSelectedItems] = useState<Option[]>([]);
+  const [tempSelectedItems, setTempSelectedItems] =
+    useState<Option[]>(selected);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setTempSelectedItems(selectedItems);
+    setTempSelectedItems(selected);
     setAnchorEl(event.currentTarget);
   };
 
@@ -45,16 +43,13 @@ export const MultiSelectFilter = ({
   };
 
   const handleApply = () => {
-    setTempSelectedItems(tempSelectedItems);
-    if (tempSelectedItems.length === 0) {
-      onFilterClear();
-    } else {
-      onSelectedChange(tempSelectedItems);
-      onApply(tempSelectedItems);
-    }
-    setSelectedItems(tempSelectedItems);
+    onApply(tempSelectedItems);
     setAnchorEl(null);
   };
+
+  useEffect(() => {
+    onSelectedChange(selected);
+  }, [selected]);
 
   const filteredItems = options.filter((item) =>
     item.label.toLowerCase().includes(searchText.toLowerCase()),
@@ -62,9 +57,15 @@ export const MultiSelectFilter = ({
 
   return (
     <>
-      <Button onClick={handleClick} variant="outlined">
-        {selectedItems.length > 0
-          ? selectedItems.map((item) => item.label).join(", ")
+      <Button
+        onClick={handleClick}
+        variant="outlined"
+        style={{
+          backgroundColor: selected.length > 0 ? "lightskyblue" : "white",
+        }}
+      >
+        {selected.length > 0
+          ? selected.map((item) => item.label).join(", ")
           : label}
       </Button>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>

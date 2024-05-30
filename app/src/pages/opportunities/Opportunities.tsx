@@ -24,7 +24,7 @@ const Opportunities = () => {
   const [whereClause, setWhereClause] = useState<OpportunitiesFilterInput>();
 
   return (
-    <div className="text-center flex flex-col gap-8">
+    <div className="text-center flex flex-col gap-6">
       <Typography variant="h4">Opportunities Page</Typography>
       <OpportunitiesFiltersPanel
         filtersData={data}
