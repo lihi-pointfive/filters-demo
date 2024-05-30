@@ -1,6 +1,6 @@
 import {
-  OpportunitiesFilterInput,
-  OpportunityFilters,
+  ResourceFilterInput,
+  ResourceFilters,
 } from "../../../../graphql/graphql.ts";
 import { defaultDataToRangeInput } from "../../../../components/filters/uiFilters/base/RangeFilter/utils.ts";
 import { RangeFilter } from "../../../../components/filters/uiFilters/base/RangeFilter/RangeFilter.tsx";
@@ -8,14 +8,16 @@ import { Range } from "../../../../components/filters/uiFilters/base/RangeFilter
 
 type SavingsFilterProps = {
   label: string;
-  filterData: OpportunityFilters["savings"];
-  onSelectedChange: (where: OpportunitiesFilterInput) => void;
+  filterData: ResourceFilters["monthlySaving"];
+  onApply: (selected: Range) => void;
+  onSelectedChange: (where: ResourceFilterInput) => void;
   onFilterClear: () => void;
 };
 
-export const SavingsFilter = ({
+export const MonthlySavingFilter = ({
   label,
   filterData,
+  onApply,
   onSelectedChange,
   onFilterClear,
 }: SavingsFilterProps) => {
@@ -23,7 +25,7 @@ export const SavingsFilter = ({
 
   const handleSelectedChange = (selected: Range) => {
     const where = {
-      savingAmount: {
+      monthlySavings: {
         GTE: selected.min,
         LTE: selected.max,
       },
@@ -35,7 +37,7 @@ export const SavingsFilter = ({
     <RangeFilter
       label={label}
       range={range}
-      onApply={() => {}}
+      onApply={onApply}
       onSelectedChange={handleSelectedChange}
       onFilterClear={onFilterClear}
     />

@@ -10,6 +10,7 @@ type RangeProps = {
   label: string;
   range: Range;
   selected?: Range;
+  onApply: (selected: Range) => void;
   onSelectedChange?: any;
   onFilterClear: () => void;
 };
@@ -17,6 +18,7 @@ type RangeProps = {
 export const RangeFilter = ({
   label,
   range,
+  onApply,
   onSelectedChange,
   onFilterClear,
 }: RangeProps) => {
@@ -42,7 +44,7 @@ export const RangeFilter = ({
     if (!tempValue) {
       onFilterClear();
     } else {
-      // Replace with onApply
+      onApply(tempValue);
       onSelectedChange(tempValue);
     }
     setValue(tempValue);

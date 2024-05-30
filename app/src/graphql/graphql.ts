@@ -1973,15 +1973,15 @@ export type ResourceFilterInput = {
 export type ResourceFilters = {
   __typename?: "ResourceFilters";
   /** Return unique identifier of the filter query */
-  _id: Scalars["String"]["output"];
+  _id?: Scalars["String"]["output"];
   /** Returns distinct integration names of resources matching the filter */
   integrationName?: Maybe<Array<Scalars["String"]["output"]>>;
   /** Return unique list of values for resource management account */
   managementAccounts?: Maybe<Array<ProjectIdName>>;
   /** Returns min/max savings of resources matching the filter */
-  monthlySaving: MinMax;
+  monthlySaving?: MinMax;
   /** Returns min/max spend of resources matching the filter */
-  monthlySpend: MinMax;
+  monthlySpend?: MinMax;
   /** Returns distinct owners of resources matching the filter */
   owners?: Maybe<Array<Scalars["String"]["output"]>>;
   /** Returns distinct projects of resources matching the filter */

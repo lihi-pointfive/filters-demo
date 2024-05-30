@@ -9,6 +9,7 @@ import { URLParamKeys } from "../../url/constants.ts";
 const Resources = () => {
   const data = {
     service: ["EKS", "EC2"],
+    monthlySaving: { max: 200 },
   };
   const [whereClause, setWhereClause] = useState<OpportunitiesFilterInput>();
   const { filters } = useURLParams([URLParamKeys.filters]);
