@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   OpportunitiesFilterInput,
   OpportunityFilters,
@@ -5,23 +6,27 @@ import {
 import { SingleSelectFilter } from "../../../../components/filters/uiFilters/base/SingleSelectFilter/SingleSelectFilter.tsx";
 import { assignedUserDataToSingleSelectInput } from "../utils.tsx";
 import { Option } from "../../../../components/filters/types.ts";
+import { defaultURLToSingleSelectInput } from "../../../../components/filters/uiFilters/base/SingleSelectFilter/utils.ts";
 
 type AssignedUserFilterProps = {
   label: string;
   filterData: OpportunityFilters["assignedUser"];
-  onSelectedChange: (where: OpportunitiesFilterInput) => void;
-  onFilterClear: () => void;
+  state?: string;
+  onApply: (selected?: Option) => void;
+  onSelectedChange: (where?: OpportunitiesFilterInput) => void;
 };
 
 export const AssignedUserFilter = ({
   label,
   filterData,
+  state,
+  onApply,
   onSelectedChange,
-  onFilterClear,
 }: AssignedUserFilterProps) => {
+  const [selected, setSelected] = useState<Option>();
   const options = assignedUserDataToSingleSelectInput(filterData);
 
-  const handleSelectedChange = (selected: Option | null) => {
+  const handleSelectedChange = (selected?: Option) => {
     const where = {
       assignedUser: {
         email: {
@@ -29,15 +34,20 @@ export const AssignedUserFilter = ({
         },
       },
     };
-    onSelectedChange(where);
+    onSelectedChange(selected ? where : undefined);
   };
+
+  useEffect(() => {
+    setSelected(defaultURLToSingleSelectInput(state));
+  }, [state]);
 
   return (
     <SingleSelectFilter
       label={label}
       options={options}
+      selected={selected}
+      onApply={onApply}
       onSelectedChange={handleSelectedChange}
-      onFilterClear={onFilterClear}
     />
   );
 };

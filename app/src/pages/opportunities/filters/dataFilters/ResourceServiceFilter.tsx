@@ -6,19 +6,21 @@ import {
   ServiceFilter,
   ServiceFilterInput,
 } from "../../../resources/filters/dataFilters/ServiceFilter.tsx";
+import { Option } from "../../../../components/filters/types.ts";
 
 type ServiceFilterProps = {
   label: string;
   filterData: ResourceFilters["service"];
   state?: string;
+  onApply: (selected: Option[]) => void;
   onSelectedChange: (where?: OpportunitiesFilterInput) => void;
-  onFilterClear: () => void;
 };
 
 export const ResourceServiceFilter = ({
   label,
   filterData,
   state,
+  onApply,
   onSelectedChange,
 }: ServiceFilterProps) => {
   const handleFilterChange = (whereClause?: ServiceFilterInput) => {
@@ -33,8 +35,8 @@ export const ResourceServiceFilter = ({
       label={label}
       filterData={filterData}
       state={state}
+      onApply={onApply}
       onSelectedChange={handleFilterChange}
-      onApply={() => {}}
     />
   );
 };

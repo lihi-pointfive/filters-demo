@@ -54,11 +54,11 @@ export const FiltersPanel = ({
 
   useEffect(() => {
     onFilterChange({
-      AND: Object.values(activeFilters).map((clause) => ({
-        ...clause,
+      AND: Object.keys(queryParams).map((param) => ({
+        ...activeFilters[param],
       })),
     });
-  }, [activeFilters]);
+  }, [queryParams, activeFilters]);
 
   return (
     <Grid container spacing={2} className="justify-center">
