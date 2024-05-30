@@ -1,35 +1,48 @@
-import {ResourceFilterInput, ResourceFilters} from "../../../../graphql/graphql.ts";
 import {
-    MultiSelectFilter
-} from "../../../../components/filters/uiFilters/base/MultiSelectFilter/MultiSelectFilter.tsx";
-import {
-    defaultDataToMultiSelectInput
-} from "../../../../components/filters/uiFilters/base/MultiSelectFilter/utils.tsx";
-import {Option} from "../../../../components/filters/types.ts";
+  ResourceFilterInput,
+  ResourceFilters,
+} from "../../../../graphql/graphql.ts";
+import { MultiSelectFilter } from "../../../../components/filters/uiFilters/base/MultiSelectFilter/MultiSelectFilter.tsx";
+import { defaultDataToMultiSelectInput } from "../../../../components/filters/uiFilters/base/MultiSelectFilter/utils.tsx";
+import { Option } from "../../../../components/filters/types.ts";
 
 type ServiceFilterProps = {
-    filterData: ResourceFilters['service'];
-    onFilterChange: (where: ServiceFilterInput) => void;
-    onApply: any;
-}
+  label: string;
+  filterData: ResourceFilters["service"];
+  selected?: Option[];
+  onSelectedChange: (where?: ServiceFilterInput) => void;
+  onFilterClear: () => void;
+};
 
 export type ServiceFilterInput = {
-    service: ResourceFilterInput['service'];
-}
+  service: ResourceFilterInput["service"];
+};
 
-export const ServiceFilter = ({filterData, onFilterChange, onApply}: ServiceFilterProps) => {
-    const options = defaultDataToMultiSelectInput(filterData);
+export const ServiceFilter = ({
+  label,
+  filterData,
+  selected,
+  onSelectedChange,
+  onFilterClear,
+}: ServiceFilterProps) => {
+  const options = defaultDataToMultiSelectInput(filterData);
 
-    const handleSelectedChange = (selected: Option[]) => {
-        const where = {
-            service: {
-                IN: selected.map(item => item.value)
-            }
-        }
-        onFilterChange(where);
+  const handleSelectedChange = (selected: Option[]) => {
+    const where = {
+      service: {
+        IN: selected.map((item) => item.value),
+      },
     };
+    onSelectedChange(where);
+  };
 
-    return (
-        <MultiSelectFilter label="Service" options={options} onApply={onApply} onSelectedChange={handleSelectedChange}/>
-    )
-}
+  return (
+    <MultiSelectFilter
+      label={label}
+      options={options}
+      selected={selected}
+      onSelectedChange={handleSelectedChange}
+      onFilterClear={onFilterClear}
+    />
+  );
+};

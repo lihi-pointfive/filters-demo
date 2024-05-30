@@ -1,21 +1,42 @@
-import {OpportunitiesFilterInput, ResourceFilters} from "../../../../graphql/graphql.ts";
-import {ServiceFilter, ServiceFilterInput} from "../../../resources/filters/dataFilters/ServiceFilter.tsx";
+import {
+  OpportunitiesFilterInput,
+  ResourceFilters,
+} from "../../../../graphql/graphql.ts";
+import {
+  ServiceFilter,
+  ServiceFilterInput,
+} from "../../../resources/filters/dataFilters/ServiceFilter.tsx";
+import { Option } from "../../../../components/filters/types.ts";
 
 type ServiceFilterProps = {
-    filterData: ResourceFilters['service'];
-    onFilterChange: (where: OpportunitiesFilterInput) => void;
-    onApply: any;
-}
+  label: string;
+  filterData: ResourceFilters["service"];
+  selected?: Option[];
+  onSelectedChange: (where?: OpportunitiesFilterInput) => void;
+  onFilterClear: () => void;
+};
 
-export const ResourceServiceFilter = ({filterData, onFilterChange, onApply}: ServiceFilterProps) => {
-    const handleFilterChange = (whereClause: ServiceFilterInput) => {
-        const where = {
-            resource: whereClause
-        }
-        onFilterChange(where);
+export const ResourceServiceFilter = ({
+  label,
+  filterData,
+  selected,
+  onSelectedChange,
+  onFilterClear,
+}: ServiceFilterProps) => {
+  const handleFilterChange = (whereClause?: ServiceFilterInput) => {
+    const where = {
+      resource: whereClause,
     };
+    onSelectedChange(where);
+  };
 
-    return (
-        <ServiceFilter filterData={filterData} onApply={onApply} onFilterChange={handleFilterChange}/>
-    )
-}
+  return (
+    <ServiceFilter
+      label={label}
+      filterData={filterData}
+      selected={selected}
+      onSelectedChange={handleFilterChange}
+      onFilterClear={onFilterClear}
+    />
+  );
+};

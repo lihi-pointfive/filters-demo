@@ -1,25 +1,25 @@
-import { useState } from 'react';
-import ReactJson from 'react-json-view';
-import { Typography, Container, Paper, Box } from '@mui/material';
-import { OpportunitiesFiltersPanel } from './filters/OpportunitiesFiltersPanel/OpportunitiesFiltersPanel.tsx';
-import { OpportunitiesFilterInput, User } from '../../graphql/graphql.ts';
+import { useState } from "react";
+import ReactJson from "react-json-view";
+import { Typography, Container, Paper, Box } from "@mui/material";
+import { OpportunitiesFiltersPanel } from "./filters/OpportunitiesFiltersPanel/OpportunitiesFiltersPanel.tsx";
+import { OpportunitiesFilterInput, User } from "../../graphql/graphql.ts";
 
 const Opportunities = () => {
   const data = {
     risk: [1, 2, 3],
     assignedUser: [
       {
-        email: 'lihi@gmail.com',
+        email: "lihi@gmail.com",
       } as User,
     ],
     opportunityType: [
-      'Expensive RDS Instance Type',
-      'Non-Spot Nodes in a Non-Production Cluster',
+      "Expensive RDS Instance Type",
+      "Non-Spot Nodes in a Non-Production Cluster",
     ],
     savings: {
       max: 403.69,
     },
-    service: ['EKS', 'EC2'],
+    service: ["EKS", "EC2"],
   };
   const [whereClause, setWhereClause] = useState<OpportunitiesFilterInput>();
 
@@ -38,7 +38,7 @@ const Opportunities = () => {
           <Paper
             className="text-left w-[600px]"
             elevation={4}
-            style={{ padding: '16px', backgroundColor: 'rgb(39, 40, 34)' }}
+            style={{ padding: "16px", backgroundColor: "rgb(39, 40, 34)" }}
           >
             <ReactJson src={whereClause as Object} theme="monokai" />
           </Paper>
