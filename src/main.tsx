@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter as Router } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import App from "./App";
 import "./index.css";
 
@@ -8,9 +8,9 @@ const rootElement = document.getElementById("root");
 if (rootElement) {
   ReactDOM.render(
     <React.StrictMode>
-      <Router basename={'/filters-demo/'}>
+      <HashRouter>
         <App />
-      </Router>
+      </HashRouter>
     </React.StrictMode>,
     rootElement,
   );

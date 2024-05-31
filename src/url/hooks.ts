@@ -7,7 +7,8 @@ export const useURLSearchParams = () => {
 
   useEffect(() => {
     const parseSearchParams = (): QueryParams => {
-      const searchParams = new URLSearchParams(window.location.search);
+      const search = window.location.hash.split('?')[1];
+      const searchParams = new URLSearchParams(search);
       const params: QueryParams = {};
       for (const [key, value] of searchParams.entries()) {
         params[key] = value;
@@ -34,7 +35,8 @@ export const useURLSearchParams = () => {
         searchParams.set(key, params[key]);
       }
     }
-    const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+    const hash = window.location.hash.split('?')[0];
+    const newUrl = `${window.location.pathname}${hash}?${searchParams.toString()}`;
     window.history.pushState({}, '', newUrl);
     setQueryParams(params);
   };
