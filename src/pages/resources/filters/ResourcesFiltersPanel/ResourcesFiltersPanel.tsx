@@ -5,6 +5,7 @@ import {
 } from "../../../../graphql/graphql.ts";
 import { ServiceFilter } from "../dataFilters/ServiceFilter.tsx";
 import { MonthlySavingFilter } from "../dataFilters/MonthlySavingsFilter.tsx";
+import { TypeFilter } from "../dataFilters/TypeFilter.tsx";
 
 type ResourcesFiltersPanelProps = {
   filtersData: ResourceFilters;
@@ -21,6 +22,7 @@ export const ResourcesFiltersPanel = ({
       props: {
         label: "Service",
         filterData: filtersData.service,
+        path: "service",
       },
     },
     {
@@ -28,6 +30,15 @@ export const ResourcesFiltersPanel = ({
       props: {
         label: "Monthly Saving",
         filterData: filtersData.monthlySaving,
+        path: "monthlySavings",
+      },
+    },
+    {
+      component: TypeFilter,
+      props: {
+        label: "Type",
+        filterData: filtersData.resourceType,
+        path: "typeName",
       },
     },
   ];

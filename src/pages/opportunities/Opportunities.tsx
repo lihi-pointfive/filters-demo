@@ -20,6 +20,7 @@ const Opportunities = () => {
       max: 403.69,
     },
     service: ["EKS", "EC2"],
+    resourceType: ["EC2 Instance", "RDS Cluster", "S3 Bucket"],
   };
   const [whereClause, setWhereClause] = useState<OpportunitiesFilterInput>();
 

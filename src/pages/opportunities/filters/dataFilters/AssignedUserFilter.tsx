@@ -13,7 +13,8 @@ type AssignedUserFilterProps = {
   filterData: OpportunityFilters["assignedUser"];
   state?: string;
   onApply: (selected?: Option) => void;
-  onSelectedChange: (where?: OpportunitiesFilterInput) => void;
+  // @ts-ignore
+  onSelectedChange: (where?: OpportunitiesFilterInput["assignedUser"]["email"]) => void;
 };
 
 export const AssignedUserFilter = ({
@@ -28,11 +29,7 @@ export const AssignedUserFilter = ({
 
   const handleSelectedChange = (selected?: Option) => {
     const where = {
-      assignedUser: {
-        email: {
-          EQ: selected?.value,
-        },
-      },
+      EQ: selected?.value,
     };
     onSelectedChange(selected ? where : undefined);
   };

@@ -53,6 +53,7 @@ export type ResourceFilters = {
   __typename?: 'ResourceFilters';
   service?: Maybe<Array<Scalars['String']['output']>>;
   monthlySaving?: MinMax;
+  resourceType?: Maybe<Array<Scalars['String']['output']>>;
 };
 
 export type ResourceFilterInput = {
@@ -60,6 +61,8 @@ export type ResourceFilterInput = {
   OR?: InputMaybe<Array<ResourceFilterInput>>;
   service?: InputMaybe<StringFilterInput>;
   monthlySavings?: InputMaybe<FloatFilterInput>;
+  resourceType?: InputMaybe<StringFilterInput>;
+  typeName?: InputMaybe<StringFilterInput>;
 };
 
 export type OpportunityFilters = {
@@ -67,6 +70,7 @@ export type OpportunityFilters = {
   service?: Maybe<Array<Scalars['String']['output']>>;
   assignedUser?: Maybe<Array<User>>;
   savings?: MinMax;
+  resourceType?: Maybe<Array<Scalars['String']['output']>>;
 };
 
 export type OpportunitiesFilterInput = {

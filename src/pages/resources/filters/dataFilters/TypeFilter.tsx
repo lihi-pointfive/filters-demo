@@ -10,21 +10,21 @@ import {
 } from "../../../../components/filters/uiFilters/base/MultiSelectFilter/utils.tsx";
 import { Option } from "../../../../components/filters/types.ts";
 
-type ServiceFilterProps = {
+type TypeFilterProps = {
   label: string;
-  filterData: ResourceFilters["service"];
+  filterData: ResourceFilters["resourceType"];
   state?: string;
   onApply: (selected: Option[]) => void;
-  onSelectedChange: (where?: ResourceFilterInput["service"]) => void;
+  onSelectedChange: (where?: ResourceFilterInput["typeName"]) => void;
 };
 
-export const ServiceFilter = ({
+export const TypeFilter = ({
   label,
   filterData,
   state,
   onApply,
   onSelectedChange,
-}: ServiceFilterProps) => {
+}: TypeFilterProps) => {
   const [selected, setSelected] = useState<Option[]>([]);
   const options = defaultDataToMultiSelectInput(filterData);
 

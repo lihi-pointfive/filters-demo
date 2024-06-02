@@ -5,7 +5,8 @@ import {
 } from "../../../../graphql/graphql.ts";
 import { AssignedUserFilter } from "../dataFilters/AssignedUserFilter.tsx";
 import { SavingsFilter } from "../dataFilters/SavingsFilter.tsx";
-import { ResourceServiceFilter } from "../dataFilters/ResourceServiceFilter.tsx";
+import { TypeFilter } from "../../../resources/filters/dataFilters/TypeFilter.tsx";
+import { ServiceFilter } from "../../../resources/filters/dataFilters/ServiceFilter.tsx";
 
 type OpportunitiesFiltersPanel = {
   filtersData: OpportunityFilters;
@@ -18,9 +19,10 @@ export const OpportunitiesFiltersPanel = ({
 }: OpportunitiesFiltersPanel) => {
   const filters = [
     {
-      component: ResourceServiceFilter,
+      component: ServiceFilter,
       props: {
         label: "Service",
+        path: "resource.service",
         filterData: filtersData.service,
       },
     },
@@ -28,6 +30,7 @@ export const OpportunitiesFiltersPanel = ({
       component: AssignedUserFilter,
       props: {
         label: "Assigned User",
+        path: "assignedUser.email",
         filterData: filtersData.assignedUser,
       },
     },
@@ -35,7 +38,16 @@ export const OpportunitiesFiltersPanel = ({
       component: SavingsFilter,
       props: {
         label: "Savings",
+        path: "savingAmount",
         filterData: filtersData.savings,
+      },
+    },
+    {
+      component: TypeFilter,
+      props: {
+        label: "Resource Type",
+        filterData: filtersData.resourceType,
+        path: "resource.typeName",
       },
     },
   ];

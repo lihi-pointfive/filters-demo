@@ -15,7 +15,7 @@ type SavingsFilterProps = {
   filterData: ResourceFilters["monthlySaving"];
   state?: string;
   onApply: (selected?: Range) => void;
-  onSelectedChange: (where?: ResourceFilterInput) => void;
+  onSelectedChange: (where?: ResourceFilterInput["monthlySavings"]) => void;
 };
 
 export const MonthlySavingFilter = ({
@@ -30,10 +30,8 @@ export const MonthlySavingFilter = ({
 
   const handleSelectedChange = (selected?: Range) => {
     const where = {
-      monthlySavings: {
-        GTE: selected?.min,
-        LTE: selected?.max,
-      },
+      GTE: selected?.min,
+      LTE: selected?.max,
     };
     onSelectedChange(selected ? where : undefined);
   };

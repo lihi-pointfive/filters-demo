@@ -8,6 +8,7 @@ const Resources = () => {
   const data = {
     service: ["EKS", "EC2"],
     monthlySaving: { max: 200 },
+    resourceType: ["EC2 Instance", "RDS Cluster", "S3 Bucket"],
   };
   const [whereClause, setWhereClause] = useState<OpportunitiesFilterInput>();
 

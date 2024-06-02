@@ -15,7 +15,7 @@ type SavingsFilterProps = {
   filterData: OpportunityFilters["savings"];
   state?: string;
   onApply: (selected?: Range) => void;
-  onSelectedChange: (where?: OpportunitiesFilterInput) => void;
+  onSelectedChange: (where?: OpportunitiesFilterInput["savingAmount"]) => void;
 };
 
 export const SavingsFilter = ({
@@ -30,10 +30,8 @@ export const SavingsFilter = ({
 
   const handleSelectedChange = (selected: Range) => {
     const where = {
-      savingAmount: {
-        GTE: selected?.min,
-        LTE: selected?.max,
-      },
+      GTE: selected?.min,
+      LTE: selected?.max,
     };
     onSelectedChange(selected ? where : undefined);
   };

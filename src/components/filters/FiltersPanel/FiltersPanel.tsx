@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
+import { set, unset } from "lodash";
 import { FilterInputTypes } from "../types.ts";
 import { filterToURL } from "../../../url/utils.ts";
 import { useURLSearchParams } from "../../../url/hooks.ts";
@@ -18,15 +19,14 @@ export const FiltersPanel = ({
   filters,
   onFilterChange,
 }: FiltersPanelProps) => {
-  const [activeFilters, setActiveFilters] = useState<{ [key: string]: any }>(
-    {},
-  );
   const [queryParams, updateSearchParams] = useURLSearchParams();
+  const [where, setWhere] = useState<{ [key: string]: any }>(
+      {},
+  );
 
   const handleOnApply = (label: string, selected: FilterInputTypes) => {
     const filterSelected = filterToURL(selected);
     const updatedQueryParams = { ...queryParams };
-    const updatedActiveFilters = { ...activeFilters };
 
     if (filterSelected) {
       updatedQueryParams[label] = filterSelected;
@@ -35,17 +35,19 @@ export const FiltersPanel = ({
     }
 
     updateSearchParams(updatedQueryParams);
-    setActiveFilters(updatedActiveFilters);
   };
 
-  const handleFilterChange = (label: string, updatedWhereClause?: any) => {
-    setActiveFilters((prevFilters) => {
+  const handleFilterChange = (
+    path: string,
+    updatedWhereClause?: any,
+  ) => {
+    setWhere((prevFilters) => {
       const updatedFilters = { ...prevFilters };
 
       if (updatedWhereClause) {
-        updatedFilters[label] = updatedWhereClause;
+        set(updatedFilters, path, updatedWhereClause);
       } else {
-        delete updatedFilters[label];
+        unset(updatedFilters, path);
       }
 
       return updatedFilters;
@@ -53,12 +55,8 @@ export const FiltersPanel = ({
   };
 
   useEffect(() => {
-    onFilterChange({
-      AND: Object.keys(queryParams).map((param) => ({
-        ...activeFilters[param],
-      })),
-    });
-  }, [queryParams, activeFilters]);
+    onFilterChange(where);
+  }, [where]);
 
   return (
     <Grid container spacing={2} className="justify-center">
@@ -71,7 +69,10 @@ export const FiltersPanel = ({
               handleOnApply(filter.props.label, selected);
             }}
             onSelectedChange={(updatedWhereClause?: any) =>
-              handleFilterChange(filter.props.label, updatedWhereClause)
+              handleFilterChange(
+                filter.props.path,
+                updatedWhereClause,
+              )
             }
           />
         </Grid>
