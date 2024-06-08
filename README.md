@@ -1,30 +1,17 @@
-# React + TypeScript + Vite
+# Filters V2 Demo
+This repository demonstrates the filter V2 feature planning with the following goals:
+1. Simplify Usage: Make filters easier to use and integrate new ones seamlessly. Clearly distinguish between UI components and business logic.
+2. Optimize Queries: Improve the efficiency of backend data retrieval.
+3. Optimize URL Handling: Enhance URL behavior to better manage filter changes.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Live Demo
+Access the live demo here: https://lihi-pointfive.github.io/filters-demo/
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+## Local Demo
+```bash
+git clone https://github.com/lihi-pointfive/filters-demo.git
+cd filters-demo
+npm install
+npm run dev
 ```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Access the local demo here: http://localhost:5174/filters-demo/
